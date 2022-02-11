@@ -1,0 +1,4 @@
+# Project exclude paths
+/yeb-generator/target/
+/yeb-mail/target/
+/yeb-server/target/
