@@ -69,7 +69,7 @@ mybatis-plus:
   #配置Mapper映射文件
   mapper-locations: classpath*:/mapper/*Mapper.xml
   # 配置MyBatis数据返回类型别名（默认别名是类名）
-  type-aliases-package: com.xxxx.server.pojo
+  type-aliases-package: com.ggz.server.pojo
   configuration:
     # 自动驼峰命名
     map-underscore-to-camel-case: false
@@ -77,7 +77,7 @@ mybatis-plus:
 ## Mybatis SQL 打印(方法接口所在的包，不是Mapper.xml所在的包)
 logging:
   level:
-    com.xxxx.server.mapper: debug
+    com.ggz.server.mapper: debug
 
 
 jwt:

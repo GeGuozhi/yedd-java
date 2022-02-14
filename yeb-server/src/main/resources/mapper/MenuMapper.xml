@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.xxxx.server.mapper.MenuMapper">
+<mapper namespace="com.ggz.server.mapper.MenuMapper">
 
 	<!-- 通用查询映射结果 -->
-	<resultMap id="BaseResultMap" type="com.xxxx.server.pojo.Menu">
+	<resultMap id="BaseResultMap" type="com.ggz.server.pojo.Menu">
 		<id column="id" property="id"/>
 		<result column="url" property="url"/>
 		<result column="path" property="path"/>
@@ -16,8 +16,8 @@
 		<result column="enabled" property="enabled"/>
 	</resultMap>
 
-	<resultMap id="Menus" type="com.xxxx.server.pojo.Menu" extends="BaseResultMap">
-		<collection property="children" ofType="com.xxxx.server.pojo.Menu" javaType="java.util.List">
+	<resultMap id="Menus" type="com.ggz.server.pojo.Menu" extends="BaseResultMap">
+		<collection property="children" ofType="com.ggz.server.pojo.Menu" javaType="java.util.List">
 			<id column="id2" property="id"/>
 			<result column="url2" property="url"/>
 			<result column="path2" property="path"/>
@@ -31,21 +31,21 @@
 		</collection>
 	</resultMap>
 
-	<resultMap id="MenusWithRole" type="com.xxxx.server.pojo.Menu" extends="BaseResultMap">
-		<collection property="roles" ofType="com.xxxx.server.pojo.Role" javaType="java.util.List">
+	<resultMap id="MenusWithRole" type="com.ggz.server.pojo.Menu" extends="BaseResultMap">
+		<collection property="roles" ofType="com.ggz.server.pojo.Role" javaType="java.util.List">
 			<id column="rid" property="id"/>
 			<result column="rname" property="name"/>
 			<result column="rnameZh" property="nameZh"/>
 		</collection>
 	</resultMap>
 
-	<resultMap id="MenusWithChildren" type="com.xxxx.server.pojo.Menu" extends="BaseResultMap">
+	<resultMap id="MenusWithChildren" type="com.ggz.server.pojo.Menu" extends="BaseResultMap">
 		<id column="id1" property="id"/>
 		<result column="name1" property="name"/>
-		<collection property="children" ofType="com.xxxx.server.pojo.Menu" javaType="java.util.List">
+		<collection property="children" ofType="com.ggz.server.pojo.Menu" javaType="java.util.List">
 			<id column="id2" property="id"/>
 			<result column="name2" property="name"/>
-			<collection property="children" ofType="com.xxxx.server.pojo.Menu" javaType="java.util.List">
+			<collection property="children" ofType="com.ggz.server.pojo.Menu" javaType="java.util.List">
 				<id column="id3" property="id"/>
 				<result column="name3" property="name"/>
 			</collection>

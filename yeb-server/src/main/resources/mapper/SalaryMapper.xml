@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.xxxx.server.mapper.SalaryMapper">
+<mapper namespace="com.ggz.server.mapper.SalaryMapper">
 
     <!-- 通用查询映射结果 -->
-    <resultMap id="BaseResultMap" type="com.xxxx.server.pojo.Salary">
+    <resultMap id="BaseResultMap" type="com.ggz.server.pojo.Salary">
         <id column="id" property="id" />
         <result column="basicSalary" property="basicSalary" />
         <result column="bonus" property="bonus" />

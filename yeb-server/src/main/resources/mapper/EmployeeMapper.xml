@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.xxxx.server.mapper.EmployeeMapper">
+<mapper namespace="com.ggz.server.mapper.EmployeeMapper">
 
 	<!-- 通用查询映射结果 -->
-	<resultMap id="BaseResultMap" type="com.xxxx.server.pojo.Employee">
+	<resultMap id="BaseResultMap" type="com.ggz.server.pojo.Employee">
 		<id column="id" property="id"/>
 		<result column="name" property="name"/>
 		<result column="gender" property="gender"/>
@@ -35,32 +35,32 @@
 		<result column="salaryId" property="salaryId"/>
 	</resultMap>
 
-    <resultMap id="EmployeeInfo" type="com.xxxx.server.pojo.Employee" extends="BaseResultMap">
-        <association property="nation" javaType="com.xxxx.server.pojo.Nation">
+    <resultMap id="EmployeeInfo" type="com.ggz.server.pojo.Employee" extends="BaseResultMap">
+        <association property="nation" javaType="com.ggz.server.pojo.Nation">
             <id column="nid" property="id" />
             <result column="nname" property="name" />
         </association>
-        <association property="politicsStatus" javaType="com.xxxx.server.pojo.PoliticsStatus">
+        <association property="politicsStatus" javaType="com.ggz.server.pojo.PoliticsStatus">
             <id column="pid" property="id" />
             <result column="pname" property="name" />
         </association>
-        <association property="department" javaType="com.xxxx.server.pojo.Department">
+        <association property="department" javaType="com.ggz.server.pojo.Department">
             <id column="did" property="id" />
             <result column="dname" property="name" />
         </association>
-        <association property="joblevel" javaType="com.xxxx.server.pojo.Joblevel">
+        <association property="joblevel" javaType="com.ggz.server.pojo.Joblevel">
             <id column="jid" property="id" />
             <result column="jname" property="name" />
         </association>
-        <association property="position" javaType="com.xxxx.server.pojo.Position">
+        <association property="position" javaType="com.ggz.server.pojo.Position">
             <id column="posid" property="id" />
             <result column="posname" property="name" />
         </association>
     </resultMap>
 
 
-	<resultMap id="EmployeeWithSalary" type="com.xxxx.server.pojo.Employee" extends="BaseResultMap">
-		<association property="salary" javaType="com.xxxx.server.pojo.Salary">
+	<resultMap id="EmployeeWithSalary" type="com.ggz.server.pojo.Employee" extends="BaseResultMap">
+		<association property="salary" javaType="com.ggz.server.pojo.Salary">
 			<id column="sid" property="id" />
 			<result column="sname" property="name" />
 			<result column="sbasicSalary" property="basicSalary" />
@@ -75,7 +75,7 @@
 			<result column="saccumulationFundBase" property="accumulationFundBase" />
 			<result column="saccumulationFundPer" property="accumulationFundPer" />
 		</association>
-		<association property="department" javaType="com.xxxx.server.pojo.Department">
+		<association property="department" javaType="com.ggz.server.pojo.Department">
 			<result column="dname" property="name" />
 		</association>
 	</resultMap>

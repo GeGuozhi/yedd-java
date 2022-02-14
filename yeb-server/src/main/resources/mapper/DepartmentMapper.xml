@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.xxxx.server.mapper.DepartmentMapper">
+<mapper namespace="com.ggz.server.mapper.DepartmentMapper">
 
 	<!-- 通用查询映射结果 -->
-	<resultMap id="BaseResultMap" type="com.xxxx.server.pojo.Department">
+	<resultMap id="BaseResultMap" type="com.ggz.server.pojo.Department">
 		<id column="id" property="id"/>
 		<result column="name" property="name"/>
 		<result column="parentId" property="parentId"/>
@@ -12,9 +12,9 @@
 		<result column="isParent" property="isParent"/>
 	</resultMap>
 
-	<resultMap id="DepartmentWithChildren" type="com.xxxx.server.pojo.Department" extends="BaseResultMap">
-		<collection property="children" ofType="com.xxxx.server.pojo.Department"
-		            select="com.xxxx.server.mapper.DepartmentMapper.getAllDepartments" column="id">
+	<resultMap id="DepartmentWithChildren" type="com.ggz.server.pojo.Department" extends="BaseResultMap">
+		<collection property="children" ofType="com.ggz.server.pojo.Department"
+		            select="com.ggz.server.mapper.DepartmentMapper.getAllDepartments" column="id">
 		</collection>
 	</resultMap>
 

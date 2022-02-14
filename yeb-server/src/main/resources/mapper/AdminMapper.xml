@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.xxxx.server.mapper.AdminMapper">
+<mapper namespace="com.ggz.server.mapper.AdminMapper">
 
     <!-- 通用查询映射结果 -->
-    <resultMap id="BaseResultMap" type="com.xxxx.server.pojo.Admin">
+    <resultMap id="BaseResultMap" type="com.ggz.server.pojo.Admin">
         <id column="id" property="id" />
         <result column="name" property="name" />
         <result column="phone" property="phone" />
@@ -16,8 +16,8 @@
         <result column="remark" property="remark" />
     </resultMap>
 
-    <resultMap id="AdminWithRole" type="com.xxxx.server.pojo.Admin" extends="BaseResultMap">
-        <collection property="roles" ofType="com.xxxx.server.pojo.Role">
+    <resultMap id="AdminWithRole" type="com.ggz.server.pojo.Admin" extends="BaseResultMap">
+        <collection property="roles" ofType="com.ggz.server.pojo.Role">
             <id column="rid" property="id" />
             <result column="rname" property="name" />
             <result column="rnameZh" property="nameZh" />
