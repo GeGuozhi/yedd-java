@@ -3,6 +3,7 @@ package com.ggz.server;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 /**
  * 启动类
@@ -12,7 +13,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  */
 @SpringBootApplication
 @MapperScan("com.ggz.server.mapper")
-// @EnableScheduling
+@EnableScheduling
 public class YebApplication {
 
 	public static void main(String[] args) {

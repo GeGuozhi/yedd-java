@@ -1,19 +1,18 @@
 package com.ggz.server.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.ggz.server.AdminUtils;
 import com.ggz.server.mapper.MenuMapper;
-import com.ggz.server.pojo.Admin;
 import com.ggz.server.pojo.Menu;
 import com.ggz.server.service.IMenuService;
+import com.ggz.server.utils.AdminUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /**
  * <p>
@@ -40,7 +39,7 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements IM
         List<Menu> menus = (List<Menu>) valueOperations.get("menu_" + adminId);
         if (CollectionUtils.isEmpty(menus)) {
             menus = menuMapper.getMenusByAdminId(adminId);
-            valueOperations.set("menu_" + adminId, menus);
+            valueOperations.set("menu_" + adminId, menus,1,TimeUnit.MINUTES);
         }
         return menus;
     }

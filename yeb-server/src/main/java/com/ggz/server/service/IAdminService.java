@@ -3,6 +3,7 @@ package com.ggz.server.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.ggz.server.pojo.Admin;
 import com.ggz.server.pojo.RespBean;
+import org.springframework.security.core.Authentication;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -43,4 +44,22 @@ public interface IAdminService extends IService<Admin> {
      * @return
      */
     RespBean updateAdminRole(Integer adminId, Integer[] rids);
+
+    /**
+     * 用户中心更新密码
+     * @param adminId
+     * @param oldPassword
+     * @param password
+     * @return
+     */
+    RespBean updatePasswordForUserCenter(Integer adminId, String oldPassword, String password);
+
+    /**
+     * 更新用户头像到FastDFS服务器中
+     * @param url
+     * @param id
+     * @param authentication
+     * @return
+     */
+    RespBean updatePictureForUserCenter(String url, Integer id, Authentication authentication);
 }

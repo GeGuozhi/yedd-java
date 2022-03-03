@@ -7,6 +7,7 @@ import com.ggz.server.pojo.MenuRole;
 import com.ggz.server.pojo.RespBean;
 import com.ggz.server.service.IMenuRoleService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,6 +25,9 @@ public class MenuRoleServiceImpl extends ServiceImpl<MenuRoleMapper, MenuRole> i
     @Autowired
     private MenuRoleMapper menuRoleMapper;
 
+    @Autowired
+    private RedisTemplate redisTemplate;
+
     @Override
     @Transactional
     public RespBean updateMenuRole(Integer rid, Integer[] mids) {
@@ -32,6 +36,9 @@ public class MenuRoleServiceImpl extends ServiceImpl<MenuRoleMapper, MenuRole> i
             return RespBean.success("更新成功");
         }
         Integer result = menuRoleMapper.insertRecord(rid,mids);
+
+        redisTemplate.delete(redisTemplate.keys("menu"+"*"));
+
         if(result == mids.length){
             return RespBean.success("更新成功");
         }

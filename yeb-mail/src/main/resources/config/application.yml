@@ -2,6 +2,10 @@ server:
   # 端口
   port: 8082
 spring:
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 100MB
   # 邮件配置
   mail:
     # 邮件服务器地址
@@ -11,20 +15,20 @@ spring:
     # 编码格式
     default-encoding: utf-8
     # 授权码（在邮箱开通服务时获取）
-    password: 你的授权码
+    password: WRCJYNWGETIQWNPE
     # 发送者邮箱地址
-    username: 你的邮箱地址
+    username: 14702954341@163.com
     # 端口（不同邮箱端口号不同）
     port: 25
 
   # rabbitmq配置
   rabbitmq:
     # 用户名
-    username: guest
+    username: abc
     # 密码
-    password: guest
+    password: abc
     # 服务器地址
-    host: 192.168.10.100
+    host: 127.0.0.1
     # 端口
     port: 5672
     listener:
@@ -43,7 +47,7 @@ spring:
     #数据库
     database: 0
     #密码
-    password: 123456
+#    password: 123456
     lettuce:
       pool:
         #最大连接数，默认8

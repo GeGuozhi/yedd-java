@@ -183,7 +183,7 @@
 			s.id AS sid,
 			s.`name` AS sname,
 			s.basicSalary AS sbasicSalary,
-			s.bonus AS sbouns,
+			s.bonus AS sbonus,
 			s.lunchSalary AS slunchSalary,
 			s.trafficSalary AS strafficSalary,
 			s.allSalary AS sallSalary,

@@ -77,7 +77,7 @@
             t_admin_role ar,
             t_menu_role mr
         WHERE
-            m1.id = m2.parentId
+            m1.id = m2.parentId and (m1.path is not null or m1.path != '')
             AND m2.id = mr.mid
             AND mr.rid = ar.rid
             AND ar.adminId = #{id}

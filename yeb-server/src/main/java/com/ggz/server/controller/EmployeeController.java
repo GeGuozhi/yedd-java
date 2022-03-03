@@ -88,7 +88,7 @@ public class EmployeeController {
     @ApiOperation(value = "获取所有部门")
     @GetMapping("/getAllDeps")
     public List<Department> getAllDeps() {
-        return iDepartmentService.getAllDepartments(-1);
+        return iDepartmentService.list();
     }
 
     @ApiOperation(value = "获取工号")
@@ -104,7 +104,7 @@ public class EmployeeController {
     }
 
     @ApiOperation(value = "更新员工")
-    @PostMapping("/updateEmployee")
+    @PutMapping("/updateEmployee")
     public RespBean updateEmployee(@RequestBody Employee employee) {
         if (iEmployeeService.updateById(employee)) {
             return RespBean.success("更新成功！");
