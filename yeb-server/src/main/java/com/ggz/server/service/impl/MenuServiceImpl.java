@@ -6,6 +6,8 @@ import com.ggz.server.pojo.Menu;
 import com.ggz.server.service.IMenuService;
 import com.ggz.server.utils.AdminUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.HashOperations;
+import org.springframework.data.redis.core.ListOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Service;
@@ -35,11 +37,22 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements IM
     public List<Menu> getMenuByAdminId() {
         Integer adminId = AdminUtils.getCurrentAdmin().getId();
 
-        ValueOperations<String, Object> valueOperations = redisTemplate.opsForValue();
-        List<Menu> menus = (List<Menu>) valueOperations.get("menu_" + adminId);
+//        ValueOperations<String, Object> valueOperations = redisTemplate.opsForValue();
+//        List<Menu> menus = (List<Menu>) valueOperations.get("menu_" + adminId);
+
+        ListOperations<String, Menu> listOperations = redisTemplate.opsForList();
+        List<Menu> menus = listOperations.range("menu_" + adminId, 0, -1L);
+
+//        if (CollectionUtils.isEmpty(menus)) {
+//            menus = menuMapper.getMenusByAdminId(adminId);
+//            valueOperations.set("menu_" + adminId, menus,1,TimeUnit.MINUTES);
+//            hashOperations.putAll("menu_" + adminId,);
+//        }
+//        return menus;
+
         if (CollectionUtils.isEmpty(menus)) {
             menus = menuMapper.getMenusByAdminId(adminId);
-            valueOperations.set("menu_" + adminId, menus,1,TimeUnit.MINUTES);
+            listOperations.leftPushAll("menu_" + adminId, menus);
         }
         return menus;
     }
