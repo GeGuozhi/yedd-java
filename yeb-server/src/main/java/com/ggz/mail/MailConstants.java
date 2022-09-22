@@ -33,12 +33,12 @@ public class MailConstants {
     public static final String MAIL_QUEUE_NAME = "mail.queue";
 
     /**
-     * 投递失败
+     *
      */
     public static final String MAIL_EXCHANGE_NAME = "mail.exchange";
 
     /**
-     * 投递失败
+     *
      */
     public static final String MAIL_ROUTING_KEY_NAME = "mail.routing.key";
 }

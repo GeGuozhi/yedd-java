@@ -1,6 +1,11 @@
 package com.ggz.server.utils;
 
 import ch.qos.logback.core.util.TimeUtil;
+import org.apache.curator.RetryPolicy;
+import org.apache.curator.RetrySleeper;
+import org.apache.curator.framework.CuratorFramework;
+import org.apache.curator.framework.CuratorFrameworkFactory;
+import org.apache.curator.retry.ExponentialBackoffRetry;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.io.ClassPathResource;
@@ -34,8 +39,10 @@ public class RedisDistributedLockUtils {
     }
 
     /**
-     * 设置锁，如果已经存在则返回0
-     * @param key 使用包名全路径可保持唯一
+     * 设置锁
+     * setIfAbsent 就是 redis 的setNX 如果存在则返回0，不操作，如果不存在则返回1并且set value
+     *
+     * @param key   使用包名全路径可保持唯一
      * @param value
      * @return
      */
@@ -46,16 +53,29 @@ public class RedisDistributedLockUtils {
 
     /**
      * 解锁，如果lua脚本返回为1，则删除key成功，释放锁成功。
-     *      如果lua脚本返回为0，则删除锁失败
+     * 如果lua脚本返回为0，则删除锁失败
+     *
      * @param key
      * @param value
      * @return
      */
-    public boolean unlock(String key,String value){
-        Long result = (Long) redisTemplate.execute(defaultRedisScript, Arrays.asList(key,value));
+    public boolean unlock(String key, String value) {
+        Long result = (Long) redisTemplate.execute(defaultRedisScript, Arrays.asList(key, value));
         return RELEASE_SUCCESS.equals(result);
     }
 
+    public static CuratorFramework getzkClient() {
+        String address = "127.0.0.1:2181";
+        ExponentialBackoffRetry retryPolicy = new ExponentialBackoffRetry(1000, 3, 5000);
+        CuratorFramework zkClient = CuratorFrameworkFactory.builder()
+                .connectString(address)
+                .sessionTimeoutMs(5000)
+                .connectionTimeoutMs(5000)
+                .retryPolicy(retryPolicy)
+                .build();
+        zkClient.start();
+        return zkClient;
+    }
 
 
 }

@@ -33,6 +33,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private RestfulAccessDeniedHandler restfulAccessDeniedHandler;
 
+//    private final IAdminService adminService;
+//
+//    private final RestAuthenticationEntryPoint restAuthenticationEntryPoint;
+//
+//    private final RestfulAccessDeniedHandler restfulAccessDeniedHandler;
+
+//    public SecurityConfig(IAdminService adminService, RestAuthenticationEntryPoint restAuthenticationEntryPoint, RestfulAccessDeniedHandler restfulAccessDeniedHandler) {
+//        this.adminService = adminService;
+//        this.restAuthenticationEntryPoint = restAuthenticationEntryPoint;
+//        this.restfulAccessDeniedHandler = restfulAccessDeniedHandler;
+//    }
+
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userDetailsService()).passwordEncoder(passwordEncoder());

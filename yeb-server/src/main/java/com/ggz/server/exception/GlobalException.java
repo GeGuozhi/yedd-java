@@ -18,7 +18,7 @@ public class GlobalException {
     public RespBean mySqlException(SQLException sqlException) {
         sqlException.printStackTrace();
         if (sqlException instanceof SQLIntegrityConstraintViolationException) {
-            return RespBean.error("该数据有相关数据，操作失败！");
+            return RespBean.error("该数据有相关联数据，操作失败！");
         }
         return RespBean.error("数据库异常，操作失败！");
     }

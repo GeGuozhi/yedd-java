@@ -18,15 +18,22 @@ import org.springframework.scripting.support.ResourceScriptSource;
 @Configuration
 public class RedisConfig {
     @Bean
-    public RedisTemplate<String,Object> redisTemplate(RedisConnectionFactory factory){
-        RedisTemplate<String,Object> redisTemplate = new RedisTemplate<>();
+    public RedisTemplate<String, Object> redisTemplate(RedisConnectionFactory factory) {
+        RedisTemplate<String, Object> redisTemplate = new RedisTemplate<>();
+//
+//        //String类型，key序列器
+//        redisTemplate.setKeySerializer(new StringRedisSerializer());
+//        //String类型，value序列器
+//        redisTemplate.setValueSerializer(new StringRedisSerializer());
+//        //Hash类型，Hash序列器
+//        redisTemplate.setHashKeySerializer(new StringRedisSerializer());
 
         //String类型，key序列器
-        redisTemplate.setKeySerializer(new StringRedisSerializer());
+        redisTemplate.setKeySerializer(new GenericJackson2JsonRedisSerializer());
         //String类型，value序列器
-        redisTemplate.setValueSerializer(new StringRedisSerializer());
+        redisTemplate.setValueSerializer(new GenericJackson2JsonRedisSerializer());
         //Hash类型，Hash序列器
-        redisTemplate.setHashKeySerializer(new StringRedisSerializer());
+        redisTemplate.setHashKeySerializer(new GenericJackson2JsonRedisSerializer());
         //Hash类型，Value序列器
         redisTemplate.setHashValueSerializer(new GenericJackson2JsonRedisSerializer());
 
@@ -35,7 +42,7 @@ public class RedisConfig {
     }
 
     @Bean
-    public DefaultRedisScript<Long> defaultRedisScript(){
+    public DefaultRedisScript<Long> defaultRedisScript() {
         DefaultRedisScript<Long> defaultRedisScript = new DefaultRedisScript<>();
         defaultRedisScript.setResultType(Long.class);
         defaultRedisScript.setScriptSource(new ResourceScriptSource(new ClassPathResource("redis/releaseLock.lua")));

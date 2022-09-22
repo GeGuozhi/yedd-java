@@ -33,11 +33,14 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     @Value("${jwt.tokenHead}")
     private String tokenHead;
 
-    @Autowired
-    private JwtTokenUtil jwtTokenUtil;
+    private final JwtTokenUtil jwtTokenUtil;
 
-    @Autowired
-    private UserDetailsService userDetailsService;
+    private final UserDetailsService userDetailsService;
+
+    public WebSocketConfig(JwtTokenUtil jwtTokenUtil, UserDetailsService userDetailsService) {
+        this.jwtTokenUtil = jwtTokenUtil;
+        this.userDetailsService = userDetailsService;
+    }
 
     /**
      * 添加这个EndPoint,这样网页就可以通过WebSocket连接上服务
@@ -67,18 +70,22 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
             public Message<?> preSend(Message<?> message, MessageChannel channel) {
                 StompHeaderAccessor accessor = MessageHeaderAccessor.getAccessor(message, StompHeaderAccessor.class);
                 //判断是否是连接，如果是需要获取Token，并且设置用户对象。
-                if(StompCommand.CONNECT.equals(accessor.getCommand())){
+                if (StompCommand.CONNECT.equals(accessor.getCommand())) {
                     String token = accessor.getFirstNativeHeader("Auth-token");
-                    if(StringUtils.isNotBlank(token)){
+                    if (StringUtils.isNotBlank(token)) {
                         String authToken = token.substring(tokenHead.length());
                         String userName = jwtTokenUtil.getUserNameFromToken(authToken);
-                        if(StringUtils.isNotBlank(userName)){
+                        if (StringUtils.isNotBlank(userName)) {
+
                             //登陆
                             UserDetails userDetails = userDetailsService.loadUserByUsername(userName);
+
                             //验证token是否有效，重新设置用户对象
                             UsernamePasswordAuthenticationToken authenticationToken =
-                                    new UsernamePasswordAuthenticationToken(userDetails,null,userDetails.getAuthorities());
+                                    new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+
                             SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+
                             accessor.setUser(authenticationToken);
                         }
                     }

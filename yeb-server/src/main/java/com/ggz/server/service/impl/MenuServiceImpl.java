@@ -52,7 +52,12 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements IM
 
         if (CollectionUtils.isEmpty(menus)) {
             menus = menuMapper.getMenusByAdminId(adminId);
-            listOperations.leftPushAll("menu_" + adminId, menus);
+            Menu[] a = new Menu[menus.size()];
+            for (int i = 0; i < menus.size(); i++) {
+                a[i] = menus.get(i);
+            }
+//            listOperations.leftPushAll("menu_" + adminId, menus);
+            listOperations.leftPushAll("menu_" + adminId, a);
         }
         return menus;
     }

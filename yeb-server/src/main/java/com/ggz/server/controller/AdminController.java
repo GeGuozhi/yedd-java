@@ -10,6 +10,7 @@ import com.ggz.server.utils.FastDFSUtils;
 import com.ggz.server.utils.RedisDistributedLockUtils;
 import io.swagger.annotations.ApiOperation;
 import lombok.SneakyThrows;
+import org.apache.curator.framework.recipes.locks.InterProcessMutex;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
@@ -122,58 +123,99 @@ public class AdminController {
         return iAdminService.updatePictureForUserCenter(url, id, authentication);
     }
 
-    @ApiOperation(value = "ceshi")
-    @PostMapping("/test")
-    public void test() throws InterruptedException {
+    private static int end;
+    private static int start;
 
-        Thread thread = new Thread(new Runnable() {
-            @SneakyThrows
-            @Override
-            public void run() {
-                execBusinessMethod();
+    @ApiOperation(value = "测试")
+    @PostMapping("/test/{count}")
+    public void test(@PathVariable Integer count) {
+        start = 1;
+        end = count;
+        Thread thread = new Thread(() -> {
+            try {
+                execBusinessMethod_Redis();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
         });
 
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < count; i++) {
             Thread thread1 = new Thread(thread, "thread_" + i);
             executorService.execute(thread1);
+
         }
     }
 
     /**
      * 业务方法
      */
-    private static AtomicInteger key = new AtomicInteger();
-    private static int a = 0;
-    public static void businessMethod(){
-        int key = a++;
-        if(a>30){
+
+
+    public static void businessMethod() {
+        if (start > end) {
             System.out.println("很抱歉，票没啦!");
-        }else{
-            System.out.println("抢票程序：" + Thread.currentThread().getName()
-                    + "在" + LocalDateTime.now() + "抢到了第" + key +"张票！");
+        } else {
+            System.out.println("抢票程序：" + Thread.currentThread().getName() + "在" + LocalDateTime.now() + "抢到了第" + start++ + "张票！");
         }
     }
 
     /**
      * 调用业务方法的地方
+     *
      * @throws InterruptedException
      */
-    public void execBusinessMethod() throws InterruptedException {
-        String key = /*AdminController.class.getName()+*/"test";
+    public void execBusinessMethod_Redis() throws InterruptedException {
+//        String key = AdminController.class.getName()+"test";
+        String key = "test";
         String value = UUID.randomUUID().toString();
-        Boolean lockResult = redisDistributedLockUtils.lock(key,value);
-        //判断是否获取到redis分布式锁，获取到执行业务方法，获取不到等待10s后重试（根据业务修改时间）
-        if(lockResult){
+        Boolean lockResult = redisDistributedLockUtils.lock(key, value);
+        //判断是否获取到redis分布式锁，获取到执行业务方法，获取不到等待100ms后重试（根据业务修改时间）
+        if (lockResult) {
             //不允许重复的业务方法
             businessMethod();
-        }else{
+        } else {
             Thread.sleep(100);
-            execBusinessMethod();
+            execBusinessMethod_Redis();
         }
-        redisDistributedLockUtils.unlock(key,value);
+        redisDistributedLockUtils.unlock(key, value);
     }
 
+    static InterProcessMutex interProcessMutex =
+            new InterProcessMutex(RedisDistributedLockUtils.getzkClient(), "/test");
+
+    public static void main(String[] args) {
+        start = 1;
+        end = 30;
+        Thread thread = new Thread(() -> {
+            try {
+                execBusinessMethod_Zookeeper();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        });
+
+        for (int i = 0; i < 50; i++) {
+            Thread thread1 = new Thread(thread, "thread_" + i);
+            executorService.execute(thread1);
+        }
+    }
+
+    public static void execBusinessMethod_Zookeeper() throws InterruptedException {
+        //判断是否获取到zkp分布式锁，获取到执行业务方法，获取不到等待100ms后重试（根据业务修改时间）
+
+        try {
+            interProcessMutex.acquire();
+            businessMethod();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                interProcessMutex.release();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
 
 
 }

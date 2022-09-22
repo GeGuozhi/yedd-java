@@ -25,11 +25,14 @@ import org.springframework.context.annotation.Configuration;
 public class RabbitMQConfig {
     private static final Logger logger = LoggerFactory.getLogger(RabbitMQConfig.class);
 
-    @Autowired
-    private CachingConnectionFactory cachingConnectionFactory;
+    private final CachingConnectionFactory cachingConnectionFactory;
 
-    @Autowired
-    private IMailLogService iMailLogService;
+    private final IMailLogService iMailLogService;
+
+    public RabbitMQConfig(CachingConnectionFactory cachingConnectionFactory, IMailLogService iMailLogService) {
+        this.cachingConnectionFactory = cachingConnectionFactory;
+        this.iMailLogService = iMailLogService;
+    }
 
     @Bean
     public RabbitTemplate rabbitTemplate() {
